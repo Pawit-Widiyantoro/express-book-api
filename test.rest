@@ -1,0 +1,84 @@
+### Register
+POST http://localhost:3000/register
+Content-Type: application/json
+
+{
+    "email": "zerolist@gmail.com",
+    "password": "123456"
+}
+
+### Login
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+    "email": "zerolist@gmail.com",
+    "password": "123456"
+}
+
+### Refresh token
+GET http://localhost:3000/refresh
+
+### Logout
+POST http://localhost:3000/logout
+
+
+### Book Resource
+### GET all books
+GET http://localhost:3000/books
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJlbWFpbCI6Inplcm9saXN0QGdtYWlsLmNvbSJ9LCJpYXQiOjE3MjUxNjM2MDUsImV4cCI6MTcyNTE2MzY2NX0.KYKQlzVTXKYCUkFjL9J82jDUCOaxq_xL3a9Dkht-gB8
+
+### GET single book
+GET http://localhost:3000/books/4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJlbWFpbCI6Inplcm9saXN0QGdtYWlsLmNvbSJ9LCJpYXQiOjE3MjUxNjMyNTQsImV4cCI6MTcyNTE2MzMxNH0.8kcNPKAVG0r3KOK0qvFp_YmUEjG1E2Cjs2q4uHyOHWY
+
+### Create new book
+POST http://localhost:3000/books
+Content-Type: application/json
+
+{
+    "title" : "Sherlock 4",
+    "author": "Arthur Conan Doyle",
+    "price": 100000, 
+    "pages": 400,
+    "genreIds":[1,2]
+}
+
+### Create new book (urlencoded)
+POST http://localhost:3000/books
+Content-Type: application/x-www-form-urlencoded
+
+title=The+Hunger+Games+4&author=jk+rowling&price=10000
+
+### Update book
+PUT http://localhost:3000/books/3
+Content-Type: application/json
+
+{
+    "title" : "The Lord of The Rings 2",
+    "author": "J.R.R. Tolkien",
+    "price": 600000, 
+    "jurusan": 500
+}
+
+### Delete book
+DELETE http://localhost:3000/books/7
+
+
+### Genres Resource
+### GET all genres
+GET http://localhost:3000/genres
+
+### GET single genre
+POST http://localhost:3000/genres
+Content-Type: application/json
+
+{
+    "name": "horror"
+}
+
+### Delete genre
+DELETE http://localhost:3000/genres/4
+
+### GET books by genre
+GET http://localhost:3000/genres/1/books
