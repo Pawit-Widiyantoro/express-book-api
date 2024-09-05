@@ -32,6 +32,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxL
 GET http://localhost:3000/books/4
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJlbWFpbCI6Inplcm9saXN0QGdtYWlsLmNvbSJ9LCJpYXQiOjE3MjUxNjMyNTQsImV4cCI6MTcyNTE2MzMxNH0.8kcNPKAVG0r3KOK0qvFp_YmUEjG1E2Cjs2q4uHyOHWY
 
+### Search book
+GET http://localhost:3000/books/search?search=HARRY
+
 ### Create new book
 POST http://localhost:3000/books
 Content-Type: application/json

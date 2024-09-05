@@ -1,6 +1,7 @@
 const { Book, Genre } = require("../model/Index")
 const logger = require("../logger");
 const upload = require("../middleware/uploadMiddleware");
+const { Sequelize, Op } = require("sequelize");
 
 exports.getAllBooks = async (req, res) => {
     const page = parseInt(req.query.page) || 0;
@@ -19,7 +20,7 @@ exports.getAllBooks = async (req, res) => {
     try {
         const books = await Book.findAll({
             limit: limit,
-            offset:offset,
+            offset: offset,
             include: Genre,
         });
         logger.info(`Successfully retrieved books - Page: ${page}, Limit: ${limit}`)
@@ -27,7 +28,7 @@ exports.getAllBooks = async (req, res) => {
             message: "Success",
             page: page,
             limit: limit,
-            data: books
+            data: books,
         });
     } catch (error) {
         logger.error(`Error retrieving books: ${error.message}`, {stack: error.stack})
@@ -162,6 +163,39 @@ exports.deleteBook = async (req, res) => {
         logger.error(`Error deleting book with ID ${bookId}: ${error.message}`, {stack:error.stack});
         res.status(500).json({
             message:"Internal Server Error", 
+            error: error.message
+        });
+    }
+}
+
+exports.searchBook = async (req, res) => {
+    const keyword = req.query.keyword;
+    const filter = req.query.filter;
+    const sort = req.query.sort;
+
+    logger.info(`Received GET request on /search: ${keyword} filtered by ${filter} and sorted by ${sort}`);
+
+    try {
+        const books = await Book.findAll({
+            where:{
+                [Op.or]: [
+                    { title: { [Op.like]: `%${keyword}%` } },
+                    { author: { [Op.like]: `%${keyword}%` } },
+                ]
+            }
+        });
+        if(books.length === 0) {
+            logger.warn(`Books with keyword ${keyword} not found`);
+            res.status(404).json({message: "Book not found"});
+        }
+        res.status(200).json({
+            message: `Success`,
+            data: books
+        });
+    } catch (error) {
+        logger.error(`Error retrieveing books: ${error.message}`, {stack: error.stack});
+        res.status(500).json({
+            message: "Internal server error", 
             error: error.message
         });
     }
