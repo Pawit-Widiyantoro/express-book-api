@@ -26,14 +26,14 @@ POST http://localhost:3000/logout
 ### Book Resource
 ### GET all books
 GET http://localhost:3000/books
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJlbWFpbCI6Inplcm9saXN0QGdtYWlsLmNvbSJ9LCJpYXQiOjE3MjUxNjM2MDUsImV4cCI6MTcyNTE2MzY2NX0.KYKQlzVTXKYCUkFjL9J82jDUCOaxq_xL3a9Dkht-gB8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJlbWFpbCI6Inplcm9saXN0QGdtYWlsLmNvbSJ9LCJpYXQiOjE3MjU1NDYxNTUsImV4cCI6MTcyNTU0NjIxNX0.rI1jkqbDHgi6ye1Mv7uXe8GTdlmI8JttaEsZvZa6aPs
 
 ### GET single book
 GET http://localhost:3000/books/4
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJlbWFpbCI6Inplcm9saXN0QGdtYWlsLmNvbSJ9LCJpYXQiOjE3MjUxNjMyNTQsImV4cCI6MTcyNTE2MzMxNH0.8kcNPKAVG0r3KOK0qvFp_YmUEjG1E2Cjs2q4uHyOHWY
 
 ### Search book
-GET http://localhost:3000/books/search?search=HARRY
+GET http://localhost:3000/books/search?keyword=Hunger&sort=author_desc
 
 ### Create new book
 POST http://localhost:3000/books

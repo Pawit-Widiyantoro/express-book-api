@@ -1,7 +1,7 @@
 const { Book, Genre } = require("../model/Index")
 const logger = require("../logger");
 const upload = require("../middleware/uploadMiddleware");
-const { Sequelize, Op } = require("sequelize");
+const { Sequelize, Op, or } = require("sequelize");
 
 exports.getAllBooks = async (req, res) => {
     const page = parseInt(req.query.page) || 0;
@@ -28,6 +28,7 @@ exports.getAllBooks = async (req, res) => {
             message: "Success",
             page: page,
             limit: limit,
+            totalBooks: books.length,
             data: books,
         });
     } catch (error) {
@@ -169,11 +170,25 @@ exports.deleteBook = async (req, res) => {
 }
 
 exports.searchBook = async (req, res) => {
-    const keyword = req.query.keyword;
-    const filter = req.query.filter;
-    const sort = req.query.sort;
+    const keyword = req.query.keyword || "";
+    const sort = req.query.sort || "title_asc";
+    const limit = parseInt(req.query.limit, 10) || 10;
+    const page = parseInt(req.query.page, 10) || 0;
+    const offset = page * limit || 0;
 
-    logger.info(`Received GET request on /search: ${keyword} filtered by ${filter} and sorted by ${sort}`);
+    logger.info(`Received GET request on /search: ${keyword} sorted by ${sort}`);
+
+    // sorting logic
+    let order;
+    if (sort === 'title_asc') {
+        order = [['title', 'ASC']];
+    } else if (sort === 'title_desc') {
+        order = [['title', 'DESC']];
+    } else if (sort === 'author_asc') {
+        order = [['author', 'ASC']];
+    } else if (sort === 'author_desc') {
+        order = [['author', 'DESC']];
+    }
 
     try {
         const books = await Book.findAll({
@@ -182,15 +197,24 @@ exports.searchBook = async (req, res) => {
                     { title: { [Op.like]: `%${keyword}%` } },
                     { author: { [Op.like]: `%${keyword}%` } },
                 ]
-            }
+            },
+            order: order,
+            limit: limit,
+            offset: offset,
         });
+
         if(books.length === 0) {
             logger.warn(`Books with keyword ${keyword} not found`);
             res.status(404).json({message: "Book not found"});
         }
         res.status(200).json({
             message: `Success`,
-            data: books
+            data: books,
+            paging: {
+                page: page,
+                limit: limit,
+                totalBooks: books.length
+            }
         });
     } catch (error) {
         logger.error(`Error retrieveing books: ${error.message}`, {stack: error.stack});
